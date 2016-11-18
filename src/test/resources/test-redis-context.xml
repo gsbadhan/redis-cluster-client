@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd ">
+
+
+	<!-- load components -->
+	<context:component-scan base-package="com.redis.*"></context:component-scan>
+	<context:annotation-config />
+
+	<!-- Redis client's connection configuration -->
+	<!-- Third party user can configure multiple instance of Redis Factory -->
+	<bean id="clusterClient" class="com.redis.client.RedisClusterClient">
+		<constructor-arg index="0" ref="clusterConfiguration" />
+	</bean>
+
+	<bean id="clusterConfiguration" class="com.redis.core.RedisConfiguration">
+		<constructor-arg name="url" value="127.0.0.1:7000;127.0.0.1:7001" />
+		<constructor-arg name="nameSpace" value="NS" />
+		<constructor-arg name="version" value="1" />
+	</bean>
+
+
+	<bean id="stringCrudKVRepo" class="com.redis.repository.StringKVCrudRepositoryImpl">
+		<constructor-arg index="0" ref="clusterClient" />
+	</bean>
+
+</beans>
