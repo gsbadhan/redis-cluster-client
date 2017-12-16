@@ -9,7 +9,7 @@ package com.redis.repository;
  * @param <V>
  * @param <R>
  */
-public interface RedisCrudRepository<K, V, R> {
+public interface RedisCrudRepository<K, V> {
 
     /**
      * check key exist
@@ -34,7 +34,7 @@ public interface RedisCrudRepository<K, V, R> {
      * @param value
      * @return
      */
-    public R saveUpdate(K key, V value);
+    public V saveUpdate(K key, V value);
 
     /**
      * save and update key and value with expire time in milliseconds.
@@ -44,7 +44,7 @@ public interface RedisCrudRepository<K, V, R> {
      * @param expireTime
      * @return
      */
-    public R saveUpdate(K key, V value, long expireTime);
+    public V saveUpdate(K key, V value, long expireTime);
 
     /**
      * remove key and its value

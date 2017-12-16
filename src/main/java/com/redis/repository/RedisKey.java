@@ -1,6 +1,14 @@
 package com.redis.repository;
 
-public interface RedisKey<K, R> {
+/**
+ * 
+ * @author gsingh
+ *
+ * @param <NS>
+ * @param <K>
+ * @param <RET>
+ */
+public interface RedisKey<K, RET> {
 
-    public R getCacheKey(K key);
+	public RET getCacheKey(K... args);
 }

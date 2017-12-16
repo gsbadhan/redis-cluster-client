@@ -2,32 +2,35 @@ package com.redis.client;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.inject.Inject;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import redis.clients.jedis.JedisCluster;
+import com.redis.core.RedisConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:test-redis-context.xml" })
+import redis.clients.jedis.JedisCommands;
+
 public class RedisClusterClientTestIT {
-    @Inject
-    private RedisClusterClient jedisClusterClient;
 
-    @Test
-    public void testGetSession() {
-        JedisCluster cluster = jedisClusterClient.getSession();
-        assertTrue(cluster != null);
-        assertTrue(cluster.getClusterNodes().size() > 0);
-    }
+	private RedisClientFactoryImpl jedisClusterClient;
 
-    @Test
-    public void shutdown() {
-        jedisClusterClient.shutdown();
-        assertTrue(jedisClusterClient.getSession() == null);
-    }
+	@Before
+	public void setUp() throws Exception {
+		RedisConfig redisConfig = new RedisConfig();
+		redisConfig.setUrls("127.0.0.1:6379");
+		jedisClusterClient = new RedisClientFactoryImpl(redisConfig);
+		jedisClusterClient.initPool();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		jedisClusterClient.shutdown();
+	}
+
+	@Test
+	public void testGetSession() {
+		JedisCommands jedisCommands = jedisClusterClient.getSession();
+		assertTrue(jedisCommands != null);
+	}
 
 }
