@@ -1,1 +1,1 @@
-# Example of Redis-Cluster client factory with Spring.
+# Example of Redis simple client and Redis-Cluster client with Jedis.
